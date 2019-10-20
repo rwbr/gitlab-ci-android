@@ -1,7 +1,9 @@
+image: docker:latest
+
 stages:
   - build
-  - push
-  - push
+  - push_latest
+  - push_tag
 
 build:
   stage: build
