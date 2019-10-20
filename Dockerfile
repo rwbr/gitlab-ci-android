@@ -6,7 +6,7 @@
 #
 
 FROM ubuntu:18.04
-MAINTAINER Jan Grewe <jan@faked.org>
+LABEL maintainer="Ralf Weinbrecher <developer@ralfweinbrecher.de>"
 
 ENV VERSION_SDK_TOOLS "4333796"
 
