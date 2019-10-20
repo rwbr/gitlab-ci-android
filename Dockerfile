@@ -21,6 +21,7 @@ RUN apt-get -qq update && \
       lib32z1 \
       unzip \
       locales \
+      xz-utils \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN locale-gen en_US.UTF-8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
@@ -45,3 +46,17 @@ RUN while read -r package; do PACKAGES="${PACKAGES}${package} "; done < /sdk/pac
     ${ANDROID_HOME}/tools/bin/sdkmanager ${PACKAGES}
 
 RUN yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses
+
+RUN ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-28" "build-tools;28.0.3"
+
+ENV FLUTTER_VERSION v1.9.1+hotfix.5-stable
+WORKDIR /
+
+RUN curl -O https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_$FLUTTER_VERSION.tar.xz && \
+  tar xf flutter_linux_$FLUTTER_VERSION.tar.xz && \
+  rm -rf flutter_linux_$FLUTTER_VERSION.tar.xz
+
+ENV PATH $PATH:/flutter/bin/cache/dart-sdk/bin:/flutter/bin
+
+RUN yes | flutter doctor --android-licenses
+RUN flutter doctor
